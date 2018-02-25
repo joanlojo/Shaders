@@ -11,15 +11,17 @@
 	{
 		Tags{ "Queue" = "Geometry" }
 		Blend SrcAlpha OneMinusSrcAlpha
+		//ZWrite Off
 		Pass
-	{
+		{
 		GLSLPROGRAM
 #ifdef VERTEX
 		varying vec2 TextureCoordinate;
+		varying float FurDiscardTexture;
 		uniform sampler2D _MainTex;
 		uniform sampler2D _FurTex;
 		uniform float _FurTile;
-		unfirm float _FurLenght;
+		uniform float _FurLenght;
 #include "UnityCG.glslinc"
 
 		vec3 CalcFurPosition(vec3 Position, vec3 Normal, float IdLayer, float
@@ -31,25 +33,31 @@
 		}
 		void main()
 	{
-		mat4 l_ViewMatrix = gl_ModelViewMatrix*unity_WorldToObject;
-		gl_Position = unity_ObjectToWorld * gl_Vertex;
-		gl_Position = l_ViewMatrix * gl_Position;
-		gl_Position = gl_ProjectionMatrix * gl_Position;
-		TextureCoordinate = gl_MultiTexCoord0.xy;
-
-
+			float l_IdLayer = 0;
+			float l_TotalLayers = 5;
+			vec3 l_Position = CalcFurPosition(gl_Vertex.xyz, gl_Normal.xyz,l_IdLayer, l_TotalLayers, _FurLenght);
+			gl_Position = gl_ModelViewProjectionMatrix * vec4(l_Position, 1.0);
+			TextureCoordinate = gl_MultiTexCoord0.xy;
+			FurDiscardTexture = (l_IdLayer + 1) / l_TotalLayers;
 	}
-
+
+
 #endif
 #ifdef FRAGMENT
 		varying vec2 TextureCoordinate;
+		varying float FurDiscardTexture;
 		uniform sampler2D _MainTex;
+		uniform sampler2D _FurTex;
+		uniform float _FurTile;
 	void main()
 	{
+		gl_FragColor = texture2D(_MainTex, TextureCoordinate);
+		vec4 l_FurColor = texture2D(_FurTex, TextureCoordinate*_FurTile);
 		gl_FragColor = texture2D(_MainTex, TextureCoordinate);
+		gl_FragColor.a = l_FurColor.x / FurDiscardTexture;
 	}
 #endif
 	ENDGLSL
-	}
+		}
 	}
 }

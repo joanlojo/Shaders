@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: fe2474adb98b5fa46a7501f734d53591
-timeCreated: 1519058899
+guid: 7817085827dfea0448b9654910bc7948
+timeCreated: 1519564519
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Torus Knot001
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0

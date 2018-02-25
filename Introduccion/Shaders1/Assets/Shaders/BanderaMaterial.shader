@@ -7,7 +7,8 @@
 		_gAmplitudeZ("AmplitudeZ", float) = 1.0
 		_gSpeed("Speed" , float) = 1.0
 		_gDividerX("DividerX" , float) = 1.0
-		_gDividerZ("DividerZ" , float) = 1.0
+		_gDividerZ("DividerZ" , float) = 1.0
+
 	}
 		SubShader
 	{
